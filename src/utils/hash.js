@@ -6,8 +6,8 @@ export const updateHash = (hash, affectHistory) => {
   if (affectHistory) {
     window.location.hash = hash
   } else {
-    const { protocol, host, pathname, search } = window.location
-    window.location.replace(`${protocol}//${host}${pathname}${search}#${hash}`)
+    const { pathname, search } = window.location
+    window.location.replace(`${pathname}${search}#${hash}`)
   }
 }
 

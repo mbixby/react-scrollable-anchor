@@ -42,13 +42,16 @@ class Manager {
     window.scroll(0,0)
   }
 
-  addAnchor = (id, component) => {
+  addAnchor = (id, component, customHashUpdater) => {
     // if this is the first anchor, set up listeners
     if (Object.keys(this.anchors).length === 0) {
       this.addListeners()
     }
     this.forceHashUpdate()
-    this.anchors[id] = component
+    this.anchors[id] = {
+      component,
+      customHashUpdater,
+    }
   }
 
   removeAnchor = (id) => {
@@ -62,10 +65,13 @@ class Manager {
   handleScroll = () => {
     const {offset, keepLastAnchorHash} = this.config
     const bestAnchorId = getBestAnchorGivenScrollLocation(this.anchors, offset)
-
     if (bestAnchorId && getHash() !== bestAnchorId) {
       this.forcedHash = true
-      updateHash(bestAnchorId, false)
+      if (this.anchors[bestAnchorId].customHashUpdater) {
+        this.anchors[bestAnchorId].customHashUpdater(bestAnchorId)
+      } else {
+        updateHash(bestAnchorId, false)
+      }
     } else if (!bestAnchorId && !keepLastAnchorHash) {
       removeHash()
     }
@@ -80,7 +86,7 @@ class Manager {
   }
 
   goToSection = (id) => {
-    let element = this.anchors[id]
+    let element = this.anchors[id] && this.anchors[id].component
     if (element) {
       jump(element, {
         duration: this.config.scrollDuration,
