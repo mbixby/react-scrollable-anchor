@@ -16,7 +16,7 @@ export default class ScrollableAnchor extends Component {
 
   componentDidMount() {
     const element = ReactDOM.findDOMNode(this.refs[Object.keys(this.refs)[0]])
-    Manager.addAnchor(this.id, element)
+    Manager.addAnchor(this.id, element, this.props.customHashUpdater)
   }
 
   componentWillUnmount() {

@@ -49,6 +49,20 @@ export default class Page extends Component {
 }
 ```
 
+The `ScrollableAnchor` component has a optional `customHashUpdater` (function) prop, that overrides the default one.
+This is useful when you have problems especially with `react-router` doing complete re-renders of the `Route` component
+that results in jumping to the top of the component after scrolling to a different section.
+
+The `customHashUpdater` receives the id of the section and can be used like this:
+```js
+// Uses the react-router history prop
+const goToSection = id => history.push({ hash: `#${id}` });
+
+<ScrollableAnchor id={'section1'} cu>
+  <div> Hello World </div>
+</ScrollableAnchor>
+```
+
 ### 2. Configure
 
 Access configureAnchors to customize scrolling and anchors.

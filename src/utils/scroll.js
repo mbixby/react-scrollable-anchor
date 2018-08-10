@@ -66,7 +66,7 @@ export const getBestAnchorGivenScrollLocation = (anchors, offset) => {
   let bestId, bestElement
 
   Object.keys(anchors).forEach((id) => {
-    const element = anchors[id]
+    const element = anchors[id].component
     if (doesElementContainScrollTop(element, offset)) {
       if (!bestElement || checkElementRelevance(bestElement, element)) {
         bestElement = element
